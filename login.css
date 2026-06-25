@@ -150,8 +150,8 @@ body.dark .icon-moon { display: block; }
 .blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(70px);
-  opacity: 0.55;
+  filter: blur(50px);
+  opacity: 0.78;
 }
 
 .blob-a {
