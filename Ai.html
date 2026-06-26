@@ -8,273 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    .briefing {
-      background: linear-gradient(140deg, #4338CA 0%, #0E7490 100%);
-      border-radius: 18px;
-      padding: 26px 30px;
-      color: #fff;
-      margin-bottom: 22px;
-      position: relative;
-      overflow: hidden;
-    }
-    body.dark .briefing { background: linear-gradient(140deg, #312E81 0%, #164E63 100%); }
-    .briefing::before {
-      content: ""; position: absolute; top: -50px; right: -50px;
-      width: 220px; height: 220px; border-radius: 50%;
-      background: rgba(255,255,255,0.07);
-    }
-    .briefing::after {
-      content: ""; position: absolute; bottom: -70px; right: 120px;
-      width: 180px; height: 180px; border-radius: 50%;
-      background: rgba(255,255,255,0.04);
-    }
-    .briefing-top {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 12px; position: relative; z-index: 1;
-    }
-    .briefing-model {
-      display: flex; align-items: center; gap: 7px;
-      font-size: 11px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.06em; opacity: 0.75;
-    }
-    .live-dot {
-      width: 6px; height: 6px; border-radius: 50%; background: #4ADE80;
-      animation: livePulse 2s infinite;
-    }
-    @keyframes livePulse {
-      0%,100% { box-shadow: 0 0 0 0 rgba(74,222,128,0.6); }
-      50% { box-shadow: 0 0 0 5px rgba(74,222,128,0); }
-    }
-    .analyze-btn {
-      display: flex; align-items: center; gap: 7px;
-      background: rgba(255,255,255,0.18); color: #fff;
-      font-size: 12.5px; font-weight: 700;
-      padding: 9px 16px; border-radius: 9px;
-      border: 1px solid rgba(255,255,255,0.25);
-      transition: background 0.15s; cursor: pointer;
-    }
-    .analyze-btn:hover { background: rgba(255,255,255,0.28); }
-    .briefing-body { position: relative; z-index: 1; }
-    .briefing-body h1 {
-      font-family: "Sora", sans-serif; font-size: 21px;
-      font-weight: 700; margin-bottom: 5px;
-    }
-    .briefing-body p { font-size: 13px; opacity: 0.82; margin-bottom: 20px; }
-    .briefing-stats {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-    }
-    .bstat {
-      background: rgba(255,255,255,0.13); border-radius: 12px;
-      padding: 14px 16px; backdrop-filter: blur(4px);
-    }
-    .bstat-num {
-      font-family: "Sora", sans-serif; font-size: 22px;
-      font-weight: 800; margin-bottom: 3px;
-    }
-    .bstat-label { font-size: 11px; opacity: 0.76; }
-
-    /* layout */
-    .ai-grid-main { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; margin-bottom: 16px; }
-    .ai-grid-sec  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
-
-    /* priority table */
-    .ptable { width: 100%; border-collapse: collapse; }
-    .ptable th {
-      font-size: 10.5px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.05em; color: #A1A1AA; text-align: left;
-      padding: 0 10px 10px; border-bottom: 1px solid #ECECEF;
-    }
-    body.dark .ptable th { color: #54545F; border-bottom-color: #1F1F2B; }
-    .ptable td {
-      padding: 9px 10px; font-size: 12.5px; vertical-align: middle;
-      border-bottom: 1px solid #F4F4F6;
-    }
-    body.dark .ptable td { border-bottom-color: #18181F; }
-    .ptable tr:last-child td { border-bottom: none; }
-    .ptable tbody tr:hover td { background: #FAFAFA; }
-    body.dark .ptable tbody tr:hover td { background: #16161F; }
-
-    .rank-badge {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 22px; height: 22px; border-radius: 6px;
-      font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 700;
-      background: #F4F4F6; color: #71717A;
-    }
-    body.dark .rank-badge { background: #1C1C26; color: #9292A0; }
-    .rank-badge.top { background: #EEF2FF; color: #4F46E5; }
-    body.dark .rank-badge.top { background: rgba(79,70,229,.2); color: #A5A6F6; }
-
-    .conf {
-      font-family: "JetBrains Mono", monospace; font-size: 11px;
-      font-weight: 700; padding: 2px 8px; border-radius: 999px;
-    }
-    .conf-h { background: #ECFDF5; color: #047857; }
-    .conf-m { background: #FFFBEB; color: #B45309; }
-    .conf-l { background: #FEF2F2; color: #DC2626; }
-    body.dark .conf-h { background: rgba(16,185,129,.16); color: #6EE7B7; }
-    body.dark .conf-m { background: rgba(245,158,11,.16); color: #FCD34D; }
-    body.dark .conf-l { background: rgba(239,68,68,.16); color: #FCA5A5; }
-
-    .task-name { font-weight: 600; max-width: 200px; }
-    .task-due { font-size: 11.5px; font-family: "JetBrains Mono", monospace; color: #71717A; }
-    body.dark .task-due { color: #9292A0; }
-    .task-due.overdue { color: #DC2626; font-weight: 700; }
-    body.dark .task-due.overdue { color: #F87171; }
-
-    /* workload side */
-    .wl-row {
-      display: flex; align-items: center; gap: 9px;
-      padding: 9px 0; border-bottom: 1px solid #F4F4F6;
-    }
-    body.dark .wl-row { border-bottom-color: #18181F; }
-    .wl-row:last-child { border-bottom: none; }
-    .wl-info { flex: 1; min-width: 0; }
-    .wl-name { font-size: 12.5px; font-weight: 600; margin-bottom: 4px; }
-    .wl-bar-wrap { display: flex; align-items: center; gap: 7px; }
-    .wl-bar { flex: 1; height: 6px; border-radius: 999px; background: #F0F0F3; overflow: hidden; }
-    body.dark .wl-bar { background: #20202C; }
-    .wl-bar i { display: block; height: 100%; border-radius: 999px; }
-    .wl-pct {
-      font-family: "JetBrains Mono", monospace; font-size: 10.5px;
-      font-weight: 700; width: 32px; text-align: right; flex-shrink: 0;
-    }
-    .wl-tag {
-      font-size: 9.5px; font-weight: 700; padding: 2px 6px;
-      border-radius: 999px; flex-shrink: 0; white-space: nowrap;
-    }
-    .wl-red  { background: #FEF2F2; color: #DC2626; }
-    .wl-ora  { background: #FFFBEB; color: #B45309; }
-    .wl-grn  { background: #ECFDF5; color: #047857; }
-    body.dark .wl-red { background: rgba(239,68,68,.12); color: #FCA5A5; }
-    body.dark .wl-ora { background: rgba(245,158,11,.12); color: #FCD34D; }
-    body.dark .wl-grn { background: rgba(16,185,129,.12); color: #6EE7B7; }
-
-    /* risk bars */
-    .risk-row {
-      display: flex; align-items: center; gap: 10px;
-      padding: 9px 0; border-bottom: 1px solid #F4F4F6;
-    }
-    body.dark .risk-row { border-bottom-color: #18181F; }
-    .risk-row:last-child { border-bottom: none; }
-    .risk-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .risk-name { font-size: 12px; font-weight: 500; flex: 1; }
-    .risk-bar { width: 72px; height: 6px; border-radius: 999px; background: #F0F0F3; overflow: hidden; flex-shrink: 0; }
-    body.dark .risk-bar { background: #20202C; }
-    .risk-pct {
-      font-size: 10.5px; font-family: "JetBrains Mono", monospace;
-      font-weight: 700; width: 30px; text-align: right; flex-shrink: 0;
-    }
-
-    /* recommendations */
-    .rec {
-      display: flex; gap: 11px; align-items: flex-start;
-      background: #FAFAFA; border: 1px solid #ECECEF; border-radius: 12px;
-      padding: 13px 14px; margin-bottom: 9px;
-    }
-    body.dark .rec { background: #15151E; border-color: #232330; }
-    .rec-ico {
-      width: 30px; height: 30px; border-radius: 8px;
-      display: grid; place-items: center; flex-shrink: 0; font-size: 14px;
-    }
-    .rec-body { flex: 1; }
-    .rec-title { font-size: 12.5px; font-weight: 600; margin-bottom: 2px; }
-    .rec-sub { font-size: 11.5px; color: #9292A0; line-height: 1.45; margin-bottom: 7px; }
-    .rec-act {
-      font-size: 11.5px; font-weight: 700; color: #4F46E5;
-      cursor: pointer; background: none; border: none; padding: 0;
-    }
-    body.dark .rec-act { color: #A5A6F6; }
-
-    /* productivity quick stats */
-    .insight-row {
-      display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;
-    }
-    .insight-chip {
-      flex: 1 1 auto; background: #F4F4F6; border-radius: 10px;
-      padding: 10px 13px; min-width: 0;
-    }
-    body.dark .insight-chip { background: #1C1C26; }
-    .insight-val {
-      font-family: "Sora", sans-serif; font-size: 18px;
-      font-weight: 700; margin-bottom: 2px;
-    }
-    .insight-label { font-size: 10.5px; color: #9292A0; }
-    .heatmap-grid {
-      display: grid; grid-template-columns: repeat(5,1fr); gap: 4px;
-    }
-    .hm-cell {
-      aspect-ratio: 1; border-radius: 5px; background: #F0F0F3;
-    }
-    body.dark .hm-cell { background: #1C1C26; }
-    .hm-l1 { background: #C7D7FD; }
-    .hm-l2 { background: #A5B4FC; }
-    .hm-l3 { background: #818CF8; }
-    .hm-l4 { background: #4F46E5; }
-    body.dark .hm-l1 { background: rgba(79,70,229,.25); }
-    body.dark .hm-l2 { background: rgba(79,70,229,.45); }
-    body.dark .hm-l3 { background: rgba(79,70,229,.68); }
-    body.dark .hm-l4 { background: #4F46E5; }
-    .hm-labels {
-      display: grid; grid-template-columns: repeat(5,1fr);
-      font-size: 9.5px; color: #A1A1AA; text-align: center; margin-top: 5px;
-    }
-
-    /* chat */
-    .ai-chat {
-      background: #FAFAFA; border: 1px solid #ECECEF;
-      border-radius: 16px; padding: 18px 20px; margin-top: 4px;
-    }
-    body.dark .ai-chat { background: #111118; border-color: #1F1F2B; }
-    .ai-chat h3 {
-      font-family: "Sora", sans-serif; font-size: 14px;
-      font-weight: 700; margin-bottom: 14px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .ai-chat h3 svg { color: #06B6D4; }
-    .chat-msgs { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
-    .chat-row { display: flex; gap: 8px; align-items: flex-start; }
-    .chat-row-me { flex-direction: row-reverse; }
-    .chat-icon {
-      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
-      background: linear-gradient(135deg,#4F46E5,#06B6D4);
-      display: grid; place-items: center; color: #fff; font-size: 11px;
-    }
-    .chat-bubble {
-      max-width: 75%; font-size: 12.5px; line-height: 1.55;
-      padding: 9px 13px; border-radius: 4px 12px 12px 12px;
-      background: #ffffff; border: 1px solid #ECECEF; color: #3F3F46;
-    }
-    body.dark .chat-bubble { background: #1A1A26; border-color: #262633; color: #D4D4D8; }
-    .chat-row-me .chat-bubble {
-      border-radius: 12px 4px 12px 12px;
-      background: #4F46E5; border-color: transparent; color: #fff;
-    }
-    .chat-input-row { display: flex; gap: 8px; }
-    .chat-input-row input {
-      flex: 1; background: #fff; border: 1px solid #ECECEF;
-      border-radius: 10px; padding: 10px 14px; font-size: 13px;
-      outline: none; color: #18181B; font-family: inherit;
-    }
-    .chat-input-row input:focus { border-color: #A5A6F6; }
-    .chat-input-row input::placeholder { color: #A1A1AA; }
-    body.dark .chat-input-row input { background: #16161F; border-color: #232330; color: #F4F4F6; }
-    .chat-send {
-      width: 36px; height: 36px; border-radius: 9px;
-      background: #4F46E5; color: #fff;
-      display: grid; place-items: center; flex-shrink: 0;
-    }
-    .chat-send:hover { background: #4338CA; }
-
-    @media (max-width: 1100px) {
-      .briefing-stats { grid-template-columns: repeat(2,1fr); }
-      .ai-grid-main  { grid-template-columns: 1fr; }
-      .ai-grid-sec   { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 740px) {
-      .ai-grid-sec { grid-template-columns: 1fr; }
-    }
-  </style>
+  <link rel="stylesheet" href="ai.css">
 </head>
 <body>
 <div class="app">
@@ -441,9 +175,9 @@
           </div>
           <div>
             <div class="wl-row">
-              <span class="mini-avatar avatar-amber">RM</span>
+              <span class="mini-avatar avatar-amber">RS</span>
               <div class="wl-info">
-                <div class="wl-name">Rhea Mehta</div>
+                <div class="wl-name">Rohit Shetty</div>
                 <div class="wl-bar-wrap">
                   <div class="wl-bar"><i style="width:92%;background:#EF4444"></i></div>
                   <span class="wl-pct">92%</span>
@@ -454,7 +188,7 @@
             <div class="wl-row">
               <span class="mini-avatar" style="background:#8B5CF6">DR</span>
               <div class="wl-info">
-                <div class="wl-name">Diego Reyes</div>
+                <div class="wl-name">Ronak agarawal</div>
                 <div class="wl-bar-wrap">
                   <div class="wl-bar"><i style="width:88%;background:#F97316"></i></div>
                   <span class="wl-pct">88%</span>
@@ -463,9 +197,9 @@
               <span class="wl-tag wl-red">OVERLOADED</span>
             </div>
             <div class="wl-row">
-              <span class="mini-avatar avatar-cyan">AK</span>
+              <span class="mini-avatar avatar-cyan">AY</span>
               <div class="wl-info">
-                <div class="wl-name">Arjun Kapoor</div>
+                <div class="wl-name">Arjun Yadav</div>
                 <div class="wl-bar-wrap">
                   <div class="wl-bar"><i style="width:78%;background:#F59E0B"></i></div>
                   <span class="wl-pct">78%</span>
@@ -485,9 +219,9 @@
               <span class="wl-tag wl-ora">MODERATE</span>
             </div>
             <div class="wl-row">
-              <span class="mini-avatar avatar-emerald">PJ</span>
+              <span class="mini-avatar avatar-emerald">SS</span>
               <div class="wl-info">
-                <div class="wl-name">Priya Jain</div>
+                <div class="wl-name">Sheetal Sharma</div>
                 <div class="wl-bar-wrap">
                   <div class="wl-bar"><i style="width:61%;background:#10B981"></i></div>
                   <span class="wl-pct">61%</span>
@@ -496,9 +230,9 @@
               <span class="wl-tag wl-grn">MODERATE</span>
             </div>
             <div class="wl-row">
-              <span class="mini-avatar avatar-indigo">TS</span>
+              <span class="mini-avatar avatar-indigo">VU</span>
               <div class="wl-info">
-                <div class="wl-name">Tom Schäfer</div>
+                <div class="wl-name">Vaibhav Upadhyay</div>
                 <div class="wl-bar-wrap">
                   <div class="wl-bar"><i style="width:45%;background:#10B981"></i></div>
                   <span class="wl-pct">45%</span>
@@ -572,15 +306,27 @@
               <div class="insight-label">Best day</div>
             </div>
             <div class="insight-chip">
-              <div class="insight-val" style="font-size:14px">10–12</div>
+              <div class="insight-val" style="font-size:14px">10-12</div>
               <div class="insight-label">Peak hours</div>
             </div>
           </div>
           <p style="font-size:10.5px;color:#A1A1AA;margin-bottom:7px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em">Task density heatmap</p>
           <div class="heatmap-grid">
-            <div class="hm-cell hm-l1"></div><div class="hm-cell hm-l3"></div><div class="hm-cell hm-l4"></div><div class="hm-cell hm-l2"></div><div class="hm-cell hm-l1"></div>
-            <div class="hm-cell hm-l2"></div><div class="hm-cell hm-l4"></div><div class="hm-cell hm-l4"></div><div class="hm-cell hm-l3"></div><div class="hm-cell hm-l1"></div>
-            <div class="hm-cell hm-l1"></div><div class="hm-cell hm-l2"></div><div class="hm-cell hm-l3"></div><div class="hm-cell hm-l2"></div><div class="hm-cell"></div>
+            <div class="hm-cell hm-l1"></div>
+            <div class="hm-cell hm-l3"></div>
+            <div class="hm-cell hm-l4"></div>
+            <div class="hm-cell hm-l2"></div>
+            <div class="hm-cell hm-l1"></div>
+            <div class="hm-cell hm-l2"></div>
+            <div class="hm-cell hm-l4"></div>
+            <div class="hm-cell hm-l4"></div>
+            <div class="hm-cell hm-l3"></div>
+            <div class="hm-cell hm-l1"></div>
+            <div class="hm-cell hm-l1"></div>
+            <div class="hm-cell hm-l2"></div>
+            <div class="hm-cell hm-l3"></div>
+            <div class="hm-cell hm-l2"></div>
+            <div class="hm-cell"></div>
           </div>
           <div class="hm-labels" style="margin-top:6px"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span></div>
         </div>
@@ -592,8 +338,8 @@
           <div class="rec">
             <div class="rec-ico" style="background:#FEF2F2">👥</div>
             <div class="rec-body">
-              <div class="rec-title">Reassign tasks from Rhea to Tom</div>
-              <div class="rec-sub">Tom is at 45% — moving 2 tasks saves Rhea 6h this week</div>
+              <div class="rec-title">Reassign tasks from Rohit to tushar</div>
+              <div class="rec-sub">tushar is at 45% — moving 2 tasks saves Rhea 6h this week</div>
               <button class="rec-act">Apply suggestion →</button>
             </div>
           </div>
@@ -625,7 +371,7 @@
         <div class="chat-msgs" id="chatMsgs">
           <div class="chat-row">
             <div class="chat-icon">AI</div>
-            <div class="chat-bubble">Hi Sara! I've finished analyzing your workspace. Product Launch Q3 needs immediate attention — 3 tasks are blocked on the API gateway upgrade. Want me to draft a rebalancing plan?</div>
+            <div class="chat-bubble">Hi Amresh! I've finished analyzing your workspace. Product Launch Q3 needs immediate attention — 3 tasks are blocked on the API gateway upgrade. Want me to draft a rebalancing plan?</div>
           </div>
           <div class="chat-row chat-row-me">
             <span class="mini-avatar avatar-indigo" style="width:26px;height:26px;font-size:10px;flex-shrink:0">SS</span>
@@ -655,72 +401,6 @@
 </div>
 
 <script src="app.js"></script>
-<script>
-(function(){
-  "use strict";
-  const input = document.getElementById("chatInput");
-  const sendBtn = document.getElementById("chatSend");
-  const msgs = document.getElementById("chatMsgs");
-
-  const aiReplies = [
-    "Based on current sprint data, I recommend prioritising Arjun's blocked tasks first. That unblocks 5 downstream items and reduces the Product Launch risk from 87% to around 54%.",
-    "Rhea's schedule is the most impacted. I can automatically move 'Interview 5 churned customers' and 'Write release notes' to Tom, who has capacity. Want me to proceed?",
-    "Your team's peak productivity window is 10 AM–12 PM Tuesday through Thursday. Scheduling your most complex tasks in those windows should improve output by an estimated 18%.",
-    "Sprints 14 and 15 both look healthy. The main concern is sprint 13 carryover — 2 tasks still unresolved that could slip into next week.",
-    "I can generate a full risk report as a PDF or send a summary to your Slack #product channel. Which would you prefer?"
-  ];
-  let replyIdx = 0;
-
-  function addMsg(text, isMe) {
-    const row = document.createElement("div");
-    row.className = "chat-row" + (isMe ? " chat-row-me" : "");
-    if (isMe) {
-      row.innerHTML = '<span class="mini-avatar avatar-indigo" style="width:26px;height:26px;font-size:10px;flex-shrink:0">SS</span><div class="chat-bubble">' + text + "</div>";
-    } else {
-      row.innerHTML = '<div class="chat-icon">AI</div><div class="chat-bubble">' + text + "</div>";
-    }
-    msgs.appendChild(row);
-    msgs.scrollTop = msgs.scrollHeight;
-  }
-
-  function send() {
-    const v = input.value.trim();
-    if (!v) return;
-    addMsg(v, true);
-    input.value = "";
-    setTimeout(function(){
-      addMsg(aiReplies[replyIdx % aiReplies.length], false);
-      replyIdx++;
-    }, 800);
-  }
-
-  sendBtn.addEventListener("click", send);
-  input.addEventListener("keydown", function(e){ if(e.key==="Enter") send(); });
-
-  document.querySelectorAll(".rec-act").forEach(function(btn){
-    btn.addEventListener("click", function(){
-      const t = document.getElementById("toastText");
-      const toast = document.getElementById("toast");
-      if(t && toast){
-        t.textContent = "Suggestion noted — I'll queue that action.";
-        toast.classList.add("is-shown");
-        clearTimeout(toast._t);
-        toast._t = setTimeout(function(){ toast.classList.remove("is-shown"); }, 2800);
-      }
-    });
-  });
-
-  document.querySelector(".analyze-btn").addEventListener("click", function(){
-    const t = document.getElementById("toastText");
-    const toast = document.getElementById("toast");
-    if(t && toast){
-      t.textContent = "Running full workspace analysis…";
-      toast.classList.add("is-shown");
-      clearTimeout(toast._t);
-      toast._t = setTimeout(function(){ toast.classList.remove("is-shown"); }, 2800);
-    }
-  });
-})();
-</script>
+<script src="ai.js"></script>
 </body>
 </html>
